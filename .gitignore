@@ -1,0 +1,5 @@
+*.*~
+*.*.swp
+*.pyc
+python-flask/env
+node/node_modules
