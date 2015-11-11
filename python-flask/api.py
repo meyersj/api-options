@@ -37,4 +37,5 @@ def user(args):
     return jsonify(res)
 
 if __name__ == '__main__':
+    print "Starting server at 127.0.0.1:5000"
     api.run()
