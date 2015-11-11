@@ -14,21 +14,6 @@ type Response struct {
 	Msg     string
 }
 
-func print_request(r *http.Request) {
-	fmt.Println("\n-- HTTP Request --\n")
-	fmt.Println(r.URL)
-	fmt.Println("\n-- Headers --\n")
-	for k, v := range r.Header {
-		fmt.Println(k, v)
-	}
-	fmt.Println("\n-- Params --\n")
-	q := r.URL.Query()
-	for k, v := range q {
-		fmt.Println(k, v)
-	}
-	fmt.Println("\n")
-}
-
 func authenticate(r *http.Request) (string, error) {
 	var response Response
 	params := r.URL.Query()
@@ -45,8 +30,6 @@ func authenticate(r *http.Request) (string, error) {
 }
 
 func view_handler(w http.ResponseWriter, r *http.Request) {
-	// print response for testing
-	print_request(r)
 	// set response headers
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-type", "application/json")
