@@ -1,5 +1,5 @@
 ## running
-You need to have pythons `virtualenv` installed and on your path
+You need to have python's `virtualenv` installed and on your path
 
 ```
 # create python virtual environment and fetch dependencies
