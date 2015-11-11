@@ -7,29 +7,46 @@ import (
 	"strconv"
 )
 
-// http://www.freshblurbs.com/blog/2013/12/07/hello-web-golang.html
-
 type Response struct {
 	Success bool
 	Msg     string
 }
 
+func build_response(r Response) (string, error) {
+	// convert Response struct into json btyte array
+	// then convert that as a json string and return it
+	json_bytes, err := json.Marshal(r)
+	if err != nil {
+		return "", err
+	}
+	json_string := string(json_bytes[:])
+	return json_string, nil
+}
+
 func authenticate(r *http.Request) (string, error) {
 	var response Response
 	params := r.URL.Query()
-	id := params.Get("id")
-	pass := params.Get("pass")
-	msg := "User authenticated"
-	if id == "admin" && pass == "admin" {
-		response = Response{Success: true, Msg: msg}
+	user_id := params.Get("id")
+	password := params.Get("pass")
+	if user_id == "" || password == "" {
+		response = Response{Success: false, Msg: "Missing id and/or pass parameters"}
+	} else if user_id == "admin" && password == "admin" {
+		response = Response{Success: true, Msg: "User authenticated"}
 	} else {
-		msg = "Try user:admin password:admin"
-		response = Response{Success: false, Msg: msg}
+		response = Response{Success: false, Msg: "Try user:admin password:admin"}
 	}
-	return json_response(response)
+	return build_response(response)
 }
 
-func view_handler(w http.ResponseWriter, r *http.Request) {
+func index_handler(w http.ResponseWriter, r *http.Request) {
+	// set response headers
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+	w.Header().Set("Content-type", "text/plain")
+	// return text response
+	fmt.Fprintf(w, "Index")
+}
+
+func user_handler(w http.ResponseWriter, r *http.Request) {
 	// set response headers
 	w.Header().Set("Access-Control-Allow-Origin", "*")
 	w.Header().Set("Content-type", "application/json")
@@ -42,21 +59,11 @@ func view_handler(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintf(w, response)
 }
 
-func json_response(r Response) (string, error) {
-	// convert Response struct into json btyte array
-	// then convert that as a json string and return it
-	json_bytes, err := json.Marshal(r)
-	if err != nil {
-		return "", err
-	}
-	json_string := string(json_bytes[:])
-	return json_string, nil
-}
-
 func start_server(port int) {
 	port_str := ":" + strconv.Itoa(port)
 	fmt.Println("Starting server at 127.0.0.1" + port_str)
-	http.HandleFunc("/user", view_handler)
+	http.HandleFunc("/index", index_handler)
+	http.HandleFunc("/user", user_handler)
 	http.ListenAndServe(port_str, nil)
 }
 
