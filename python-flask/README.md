@@ -5,7 +5,7 @@ You need to have python's `virtualenv` installed and on your path
 # create python virtual environment and fetch dependencies
 ./setup_env.sh
 
-# run script with the virtual environments python
+# run api script with the new virtual environment
 env/bin/python api.py
 ```
 
