@@ -7,7 +7,7 @@ Each implementation has two endpoints available. If the `id` and `pass` are both
 the user will receive a success message.
 
 + Index: 127.0.0.1:500x/
-+ User Authenicate: 127.0.0.1:500x/user?id=<user id>&pass=<password>
++ User Authenticate: 127.0.0.1:500x/user?id=<user id>&pass=<password>
 
 After running, each implementation can be accessed at the following endpoints
 
